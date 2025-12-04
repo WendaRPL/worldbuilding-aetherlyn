@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World of Aetherlyn - Worldbuilding & Locations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/world.css">
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <h1>World of Aetherlyn</h1>
+        </div>
+        
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="https://patch.worldofaetherlyn.web.id"><i class="fas fa-code-branch"></i> Patch Notes</a></li>
+            <li><a href="worldbuilding.html" class="active"><i class="fas fa-globe-asia"></i> Worldbuilding</a></li>
+            <li><a href="https://archive.worldofaetherlyn.web.id"><i class="fas fa-archive"></i> Archive</a></li>
+            <li><a href="https://catalog.worldofaetherlyn.web.id"><i class="fas fa-book"></i> Catalog</a></li>
+        </ul>
+    </nav>
+
+    <!-- Worldbuilding Hero Section -->
+    <section class="worldbuilding-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">World of Aetherlyn Archives</h1>
+                <p class="hero-subtitle">Explore 50 unique locations across the realm. Each holds secrets, stories, and adventures waiting to be discovered.</p>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">50</div>
+                        <div class="stat-label">Locations</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">∞</div>
+                        <div class="stat-label">Stories</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="worldbuilding-main">
+        <div class="container">
+            
+            <!-- Filter & Search Bar -->
+            <div class="locations-controls">    
+                    <div class="filter-section">
+                        <h3><i class="fas fa-filter"></i> Filter by Category</h3>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-filter="all">All Locations</button>
+                            <button class="filter-btn" data-filter="forest"><i class="fas fa-tree"></i> Forests</button>
+                            <button class="filter-btn" data-filter="guild"><i class="fas fa-users"></i> Guild</button>
+                            <button class="filter-btn" data-filter="kingdom"><i class="fas fa-crown"></i> Kingdom</button>
+                            <button class="filter-btn" data-filter="dungeon"><i class="fas fa-skull-crossbones"></i> Dungeons</button>
+                            <button class="filter-btn" data-filter="water"><i class="fas fa-water"></i> Water</button>
+                            <button class="filter-btn" data-filter="others"><i class="fas fa-star"></i> Others</button>
+                        </div>
+                    </div>
+
+                <div class="search-sort-section">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="locationSearch" placeholder="Search locations by name, feature, or ruler...">
+                    </div>
+                    
+                    <div class="sort-box">
+                        <i class="fas fa-sort"></i>
+                        <select id="sortSelect">
+                            <option value="name-asc">Name: A to Z</option>
+                            <option value="name-desc">Name: Z to A</option>
+                            <option value="danger-desc">Danger: High to Low</option>
+                            <option value="danger-asc">Danger: Low to High</option>
+                            <option value="magic-desc">Magic: High to Low</option>
+                            <option value="members-desc">Members: High to Low</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Locations Grid -->
+            <div class="locations-container">
+                <div class="locations-header">
+                    <h2><i class="fas fa-map-marked-alt"></i> Discovered Locations</h2>
+                    <div class="locations-counter">
+                        Showing <span id="showingCount">50</span> of <span id="totalCount">50</span> locations
+                    </div>
+                </div>
+
+                <div class="locations-grid" id="locationsGrid">
+                    <!-- Cards will be populated by JavaScript -->
+                </div>
+
+                <!-- Loading State -->
+                <div class="loading-state" id="loadingState">
+                    <div class="loading-spinner"></div>
+                    <p>Loading locations...</p>
+                </div>
+
+                <!-- Empty State -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <i class="fas fa-map"></i>
+                    <h3>No locations found</h3>
+                    <p>Try adjusting your filters or search terms</p>
+                    <button class="reset-btn" id="resetFilters">Reset All Filters</button>
+                </div>
+
+                <!-- Pagination (optional for future) -->
+                <div class="pagination" style="display: none;">
+                    <button class="page-btn prev"><i class="fas fa-chevron-left"></i> Previous</button>
+                    <div class="page-numbers">
+                        <span class="page-number active">1</span>
+                        <span class="page-number">2</span>
+                        <span class="page-number">3</span>
+                        <span class="page-dots">...</span>
+                        <span class="page-number">5</span>
+                    </div>
+                    <button class="page-btn next">Next <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Map Preview -->
+            <div class="map-preview">
+                <h3><i class="fas fa-globe-americas"></i> Interactive Map Preview</h3>
+                <div class="map-placeholder">
+                    <div class="map-overlay">
+                        <p>Interactive world map coming soon</p>
+                        <p>Explore the geographical relationships between locations</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>© 2025 World of Aetherlyn. All locations and lore are community-created.</p>
+                <p>Worldbuilding Archives v1.0 - The Cartographer's Edition</p>
+                <p class="footer-note">
+                    <i class="fas fa-compass"></i> Your exploration contributes to the ever-expanding world
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="js/data.js"></script>
+    <script src="js/world.js"></script>
+    
+    <!-- Initialize -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize main app
+            if (window.MainApp) {
+                MainApp.init();
+            }
+            
+            // Initialize worldbuilding
+            if (window.WorldbuildingApp) {
+                WorldbuildingApp.init();
+            }
+        });
+    </script>
+</body>
+</html>
