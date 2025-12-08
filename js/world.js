@@ -13,8 +13,68 @@ const MainApp = (function() {
         cacheElements();
         bindEvents();
         initCustomCursor(); 
+        initDropdowns();
     }
     
+    // === DROPDOWNS ===
+function initDropdowns() {
+    console.log('Initializing dropdowns');
+
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    const dropdowns = document.querySelectorAll('.dropdown');
+
+    dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            // Mobile-only behavior
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const dropdown = this.closest('.dropdown');
+                const isActive = dropdown.classList.contains('active');
+
+                // Close other dropdowns
+                dropdowns.forEach(d => {
+                    if (d !== dropdown) d.classList.remove('active');
+                });
+
+                dropdown.classList.toggle('active');
+            }
+        });
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.dropdown')) {
+            dropdowns.forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+        }
+    });
+
+    // ESC key to close dropdowns
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            dropdowns.forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+        }
+    });
+
+    // Desktop hover support
+    if (window.innerWidth > 768) {
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener('mouseenter', function() {
+                this.classList.add('active');
+            });
+
+            dropdown.addEventListener('mouseleave', function() {
+                this.classList.remove('active');
+            });
+        });
+    }
+}
+
     // Initialize custom cursor
     function initCustomCursor() {
         if (isCursorInitialized) {
@@ -113,6 +173,32 @@ const MainApp = (function() {
                 link.addEventListener('click', closeMobileMenu);
             });
         }
+
+            // Modified: Handle dropdown toggle clicks
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            if (link.classList.contains('dropdown-toggle')) {
+                // Let initDropdowns() handle dropdown toggles
+                return;
+            }
+            link.addEventListener('click', closeMobileMenu);
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const isClickInsideSidebar = event.target.closest('.nav-links');
+            const isClickOnHamburger = event.target.closest('.hamburger');
+            
+            if (!isClickInsideSidebar && !isClickOnHamburger && navLinks.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        });
+        
+        // ESC key to close mobile menu
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        });
         
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
