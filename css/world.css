@@ -762,12 +762,12 @@ footer {
 :root {
     /* Additional colors for worldbuilding */
     --category-forest: #27ae60;
-    --category-mountain: #7f8c8d;
-    --category-city: #8e44ad;
+    --category-guild: #7f8c8d;
+    --category-kingdom: #e7bd05;
     --category-dungeon: #c0392b;
     --category-water: #3498db;
-    --category-desert: #f39c12;
-    --category-mystical: #9b59b6;
+    --category-others: #9b59b6;
+    --category-southern: #70a3b0;
     
     /* Stat colors */
     --stat-high: #2ecc71;
@@ -1054,12 +1054,13 @@ footer {
 
 /* Category Backgrounds */
 .category-forest { background: linear-gradient(135deg, var(--category-forest), #1e8449); }
-.category-mountain { background: linear-gradient(135deg, var(--category-mountain), #616a6b); }
-.category-city { background: linear-gradient(135deg, var(--category-city), #6c3483); }
+.category-guild { background: linear-gradient(135deg, var(--category-guild), #616a6b); }
+.category-kingdom { background: linear-gradient(135deg, var(--category-kingdom), #e7bd05); }
 .category-dungeon { background: linear-gradient(135deg, var(--category-dungeon), #922b21); }
 .category-water { background: linear-gradient(135deg, var(--category-water), #21618c); }
-.category-desert { background: linear-gradient(135deg, var(--category-desert), #b9770e); }
-.category-mystical { background: linear-gradient(135deg, var(--category-mystical), #76448a); }
+.category-others { background: linear-gradient(135deg, var(--category-others), #76448a); }
+.category-southern { background: linear-gradient(135deg, var(--category-southern), #70a3b0); }
+
 
 .card-badge {
     display: flex;
