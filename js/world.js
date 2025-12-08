@@ -50,7 +50,7 @@ const MainApp = (function() {
         
         document.addEventListener('mousemove', handleMouseMove);
         
-        const interactiveElements = 'a, button, .cta-button, .portal-card, .nav-links a, input, textarea, .location-card, .visit-btn, .filter-btn';
+        const interactiveElements = 'a, button, .cta-button, .portal-card, .nav-links a, input, textarea, .location-card, .filter-btn';
         document.querySelectorAll(interactiveElements).forEach(el => {
             el.addEventListener('mouseenter', handleElementHover);
             el.addEventListener('mouseleave', handleElementLeave);
@@ -476,20 +476,9 @@ const WorldbuildingApp = (function() {
                 <div class="member-count">
                     <i class="fas fa-user-friends"></i> ${safeLoc.members.toLocaleString()} active
                 </div>
-                <button class="visit-btn" data-location-id="${safeLoc.id}">
-                    <i class="fas fa-door-open"></i> Enter Location
-                </button>
             </div>
         `;
         
-        // Add click event to visit button
-        const visitBtn = card.querySelector('.visit-btn');
-        if (visitBtn) {
-            visitBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                handleVisitLocation(safeLoc.id);
-            });
-        }
         
         // Add hover effects for custom cursor
         card.addEventListener('mouseenter', () => {
