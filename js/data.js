@@ -109,15 +109,15 @@ const WorldLocations = {
             id: 4,
             name: "Guardians of Night",
             category: "guild",
-            governingBody: "Guardians of Night",
-            description: "Guild yang terlahir dari revolusi Troupe de Fools. Berdiri untuk kebenaran sejati, tanpa memandang cahaya atau kesucian.",
-            features: ["Tempat tinggal", "Blacksmith", "Brewing Area", "Training Area"],
-            danger: "low",
-            magic: "extreme",
-            activity: 50,
-            exploration: 100,
-            members: 33,
-            discovered: "2023-05-22"
+            governingBody: "Troupe de Fools",
+            description: "Guild yang percaya pada kekuatan bulan daripada matahari, terdiri dari mereka yang tertindas dan mencari kebenaran sejati. Bukan pahlawan, tetapi korban yang bangkit menjaga keseimbangan. 'Membangun dunia yang lebih jujur, di mana kekuatan digunakan bukan untuk menyucikan nama, tapi untuk menjaga keseimbangan.' Fokus pada strategi politik, perlawanan sipil, dan aktivitas quest khusus.",
+            features: ["Political Strategy", "Civil Resistance", "Elite Training", "Brutal Fighting", "Shadow Operations", "Member Quests", "Truth Seekers"],
+            danger: "high",
+            magic: "high",
+            activity: 65,
+            exploration: 40,
+            members: 47,
+            discovered: "2025-08-03"
         },
         {
             id: 5,
@@ -806,7 +806,20 @@ const WorldLocations = {
                 "Dream Induction Zone (Passive)"
             ]
         },
-
+        {
+            id: 36,
+            name: "Guild The Veilborn",
+            category: "guild",
+            governingBody: "Kaelrion Dzarven",
+            description: "Mansion tersembunyi di tengah hutan tenggara Abyssal Forest yang menjadi markas The Veilborn - penjaga tabir yang melindungi batas antara dunia manusia dan kekuatan tak tersentuh. Bukan sekadar penyihir atau ksatria, mereka adalah penjaga keseimbangan yang tak terikat cahaya maupun kegelapan. 'Kami tidak menyembah terang. Kami tidak tunduk pada gelap. Kami menjaga batas yang memisahkan keduanya.'",
+            features: ["Balance Keepers", "Secret Order", "Ancient Library", "Training Grounds", "Ritual Chambers", "Forest Sanctuary", "Boundary Protection"],
+            danger: "medium",
+            magic: "ancient",
+            activity: 45,
+            exploration: 85,
+            members: 28,
+            discovered: "2023-11-15"
+        },
 
     ],
 
