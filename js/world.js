@@ -6,293 +6,391 @@ const MainApp = (function() {
     let cursorDot = null;
     let cursorOutline = null;
     let isCursorInitialized = false;
-    
+    let body = null;
+
     // Initialize
     function init() {
         console.log('MainApp initialized');
+        body = document.body;
         cacheElements();
-        bindEvents();
-        initCustomCursor(); 
+        initMobileMenu();
         initDropdowns();
+        initCustomCursor();
+        initScrollAnimations();
     }
-    
-    // === DROPDOWNS ===
-function initDropdowns() {
-    console.log('Initializing dropdowns');
 
-    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-    const dropdowns = document.querySelectorAll('.dropdown');
+    // Cache DOM elements
+    function cacheElements() {
+        hamburger = document.querySelector('.hamburger');
+        navLinks = document.querySelector('.nav-links');
+        console.log('Cached elements:', { 
+            hamburger: !!hamburger, 
+            navLinks: !!navLinks 
+        });
+    }
 
-    dropdownToggles.forEach(toggle => {
-        toggle.addEventListener('click', function(e) {
-            // Mobile-only behavior
+    // === MOBILE MENU — FINAL CONVERTED VERSION ===
+function initMobileMenu() {
+    console.log('Initializing mobile menu');
+
+    if (!hamburger || !navLinks) {
+        console.error('Hamburger/navLinks missing');
+        return;
+    }
+
+    // === HAMBURGER CLICK — FIXED ===
+    hamburger.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        toggleMobileMenu();
+    });
+
+    // === OUTSIDE CLICK (CAPTURE MODE) — FIX 100% ===
+    document.addEventListener('mousedown', function(event) {
+        if (!navLinks.classList.contains('active')) return;
+
+        const clickedHamburger = event.target.closest('.hamburger');
+        const clickedSidebar  = event.target.closest('.nav-links');
+
+        if (!clickedHamburger && !clickedSidebar) {
+            closeMobileMenu();
+        }
+    }, true);
+
+    // ESC closes sidebar
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+            closeMobileMenu();
+        }
+    });
+
+    // Auto-close when changing viewport
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (window.innerWidth > 768) {
+                closeMobileMenu();
+            }
+        }, 200);
+    });
+
+    // Close when clicking normal nav links (mobile)
+    document.querySelectorAll('.nav-links > li > a:not(.dropdown-toggle)').forEach(link => {
+        link.addEventListener('click', () => {
             if (window.innerWidth <= 768) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                const dropdown = this.closest('.dropdown');
-                const isActive = dropdown.classList.contains('active');
-
-                // Close other dropdowns
-                dropdowns.forEach(d => {
-                    if (d !== dropdown) d.classList.remove('active');
-                });
-
-                dropdown.classList.toggle('active');
+                closeMobileMenu();
             }
         });
     });
+}
 
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.dropdown')) {
+function toggleMobileMenu() {
+    navLinks.classList.toggle('active');
+    hamburger.classList.toggle('active');
+
+    const isMenuOpen = navLinks.classList.contains('active');
+
+    // Lock scroll using HTML (world.js standard)
+    body.classList.toggle('menu-open', isMenuOpen);
+    document.documentElement.style.overflow = isMenuOpen ? 'hidden' : '';
+
+    console.log('Mobile menu:', isMenuOpen ? 'OPEN' : 'CLOSED');
+
+    // === AUTO-OPEN MOBILE DROPDOWN (from landing main.js) ===
+    const mobileDropdown = document.querySelector('.mobile-dropdown');
+
+    if (window.innerWidth <= 768) {
+        if (isMenuOpen) {
+            // Open dropdown automatically
+            setTimeout(() => {
+                if (mobileDropdown) {
+                    mobileDropdown.classList.add('active');
+                    console.log('Auto-open mobile dropdown');
+                }
+            }, 100);
+        } else {
+            // Close dropdown when menu closes
+            if (mobileDropdown) {
+                mobileDropdown.classList.remove('active');
+            }
+        }
+    }
+}
+
+
+function closeMobileMenu() {
+    if (!navLinks || !hamburger) return;
+
+    navLinks.classList.remove('active');
+    hamburger.classList.remove('active');
+    body.classList.remove('menu-open');
+
+    document.documentElement.style.overflow = '';
+
+    // Close dropdowns
+    document.querySelectorAll('.dropdown').forEach(drop => drop.classList.remove('active'));
+
+    console.log('Mobile menu closed');
+}
+
+
+    // === DROPDOWNS ===
+    function initDropdowns() {
+        console.log('Initializing dropdowns');
+
+        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+        const dropdowns = document.querySelectorAll('.dropdown');
+
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                // Mobile behavior
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const dropdown = this.closest('.dropdown');
+                    const wasActive = dropdown.classList.contains('active');
+
+                    // Close other dropdowns
+                    dropdowns.forEach(d => {
+                        if (d !== dropdown) d.classList.remove('active');
+                    });
+
+                    // Toggle current
+                    dropdown.classList.toggle('active');
+
+                    console.log('Dropdown:', wasActive ? 'CLOSED' : 'OPENED');
+
+                    // Scroll into view if opening
+                    if (!wasActive) {
+                        setTimeout(() => {
+                            dropdown.scrollIntoView({ 
+                                behavior: 'smooth', 
+                                block: 'nearest' 
+                            });
+                        }, 100);
+                    }
+                }
+            });
+        });
+
+        // Close dropdowns on outside click (desktop)
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth > 768) {
+                if (!e.target.closest('.dropdown')) {
+                    dropdowns.forEach(dropdown => {
+                        dropdown.classList.remove('active');
+                    });
+                }
+            }
+        });
+
+        // ESC to close dropdowns
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                dropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            }
+        });
+
+        // Desktop hover
+        if (window.innerWidth > 768) {
             dropdowns.forEach(dropdown => {
-                dropdown.classList.remove('active');
+                dropdown.addEventListener('mouseenter', function() {
+                    this.classList.add('active');
+                });
+
+                dropdown.addEventListener('mouseleave', function() {
+                    this.classList.remove('active');
+                });
             });
         }
-    });
 
-    // ESC key to close dropdowns
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            dropdowns.forEach(dropdown => {
-                dropdown.classList.remove('active');
+        // Close menu when clicking dropdown items (mobile)
+        document.querySelectorAll('.dropdown-menu a').forEach(item => {
+            item.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    closeMobileMenu();
+                }
             });
-        }
-    });
+        });
 
-    // Desktop hover support
-    if (window.innerWidth > 768) {
-        dropdowns.forEach(dropdown => {
-            dropdown.addEventListener('mouseenter', function() {
-                this.classList.add('active');
+        // Close menu when clicking regular nav links (mobile)
+        document.querySelectorAll('.nav-links > li > a:not(.dropdown-toggle)').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    closeMobileMenu();
+                }
             });
+        });
+    }
 
-            dropdown.addEventListener('mouseleave', function() {
-                this.classList.remove('active');
-            });
+    // Mobile dropdown manual toggle
+function initMobileDropdown() {
+    const mobileDropdown = document.querySelector('.mobile-dropdown');
+    
+    if (!mobileDropdown) return;
+
+    const dropdownToggle = mobileDropdown.querySelector('.dropdown-toggle');
+
+    if (dropdownToggle && window.innerWidth <= 768) {
+        dropdownToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            mobileDropdown.classList.toggle('active');
+
+            if (mobileDropdown.classList.contains('active')) {
+                setTimeout(() => {
+                    mobileDropdown.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest'
+                    });
+                }, 100);
+            }
         });
     }
 }
 
-    // Initialize custom cursor
+
+    // === CUSTOM CURSOR ===
     function initCustomCursor() {
-        if (isCursorInitialized) {
-            console.log('Cursor already initialized');
+        if (isCursorInitialized || window.innerWidth <= 768) {
+            console.log('Cursor init skipped (mobile or already init)');
             return;
         }
-        
+
         cursorDot = document.querySelector('.cursor-dot');
         cursorOutline = document.querySelector('.cursor-outline');
-        
+
         if (!cursorDot || !cursorOutline) {
-            console.warn('Cursor elements not found, will retry...');
-            setTimeout(() => {
-                cursorDot = document.querySelector('.cursor-dot');
-                cursorOutline = document.querySelector('.cursor-outline');
-                if (cursorDot && cursorOutline) {
-                    setupCursor();
-                }
-            }, 500);
+            console.warn('Cursor elements not found, retrying...');
+            setTimeout(initCustomCursor, 500);
             return;
         }
-        
+
         setupCursor();
     }
-    
-    // Setup cursor functionality
+
     function setupCursor() {
         console.log('Setting up custom cursor');
         
         cursorDot.style.opacity = '1';
         cursorOutline.style.opacity = '0.5';
         document.body.style.cursor = 'none';
+
+        let rafId = null;
         
-        document.addEventListener('mousemove', handleMouseMove);
-        
-        const interactiveElements = 'a, button, .cta-button, .portal-card, .nav-links a, input, textarea, .location-card, .filter-btn';
+        function handleMouseMove(e) {
+            if (rafId) return;
+            
+            rafId = requestAnimationFrame(() => {
+                if (!cursorDot || !cursorOutline) return;
+                
+                const posX = e.clientX;
+                const posY = e.clientY;
+
+                cursorDot.style.left = `${posX}px`;
+                cursorDot.style.top = `${posY}px`;
+                
+                cursorOutline.style.left = `${posX}px`;
+                cursorOutline.style.top = `${posY}px`;
+                
+                rafId = null;
+            });
+        }
+
+        document.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+        const interactiveElements = 
+            'a, button, .cta-button, .portal-card, .nav-links a, .dropdown-toggle, .dropdown-menu a, input, textarea, .location-card, .filter-btn';
+
         document.querySelectorAll(interactiveElements).forEach(el => {
             el.addEventListener('mouseenter', handleElementHover);
             el.addEventListener('mouseleave', handleElementLeave);
         });
-        
+
         isCursorInitialized = true;
-        console.log('Custom cursor setup complete');
+        console.log('Cursor setup complete');
     }
-    
-    // Handle mouse movement
-    function handleMouseMove(e) {
-        if (!cursorDot || !cursorOutline) return;
-        
-        const posX = e.clientX;
-        const posY = e.clientY;
-        
-        cursorDot.style.left = `${posX}px`;
-        cursorDot.style.top = `${posY}px`;
-        
-        cursorOutline.style.transition = 'left 0.1s ease-out, top 0.1s ease-out';
-        cursorOutline.style.left = `${posX}px`;
-        cursorOutline.style.top = `${posY}px`;
-    }
-    
-    // Handle element hover
+
     function handleElementHover() {
         if (!cursorOutline) return;
-        
         cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
         cursorOutline.style.backgroundColor = 'rgba(76, 201, 240, 0.15)';
         cursorOutline.style.borderColor = 'var(--accent-primary)';
         cursorOutline.style.opacity = '0.8';
     }
-    
-    // Handle element leave
+
     function handleElementLeave() {
         if (!cursorOutline) return;
-        
         cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
         cursorOutline.style.backgroundColor = '';
         cursorOutline.style.borderColor = 'var(--accent-primary)';
         cursorOutline.style.opacity = '0.5';
     }
-    
-    // Cache DOM elements
-    function cacheElements() {
-        hamburger = document.querySelector('.hamburger');
-        navLinks = document.querySelector('.nav-links');
-    }
-    
-    // Bind event listeners
-    function bindEvents() {
-        console.log('Binding events');
-        
-        // Mobile navigation
-        if (hamburger && navLinks) {
-            hamburger.addEventListener('click', toggleMobileMenu);
-            
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.addEventListener('click', closeMobileMenu);
-            });
-        }
 
-            // Modified: Handle dropdown toggle clicks
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            if (link.classList.contains('dropdown-toggle')) {
-                // Let initDropdowns() handle dropdown toggles
-                return;
-            }
-            link.addEventListener('click', closeMobileMenu);
-        });
-        
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const isClickInsideSidebar = event.target.closest('.nav-links');
-            const isClickOnHamburger = event.target.closest('.hamburger');
-            
-            if (!isClickInsideSidebar && !isClickOnHamburger && navLinks.classList.contains('active')) {
-                closeMobileMenu();
-            }
-        });
-        
-        // ESC key to close mobile menu
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
-                closeMobileMenu();
-            }
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', handleSmoothScroll);
-        });
-        
-        // Portal card hover effects
-        document.querySelectorAll('.portal-card').forEach(card => {
-            card.addEventListener('mouseenter', handlePortalCardHover);
-            card.addEventListener('mouseleave', handlePortalCardLeave);
-        });
-        
-        // CTA button hover effects
-        document.querySelectorAll('.cta-button').forEach(button => {
-            button.addEventListener('mouseenter', handleCtaButtonHover);
-            button.addEventListener('mouseleave', handleCtaButtonLeave);
-        });
-    }
-    
-    // Mobile menu functions
-    function toggleMobileMenu() {
-        navLinks.classList.toggle('active');
-        hamburger.classList.toggle('active');
-    }
-    
-    function closeMobileMenu() {
-        navLinks.classList.remove('active');
-        hamburger.classList.remove('active');
-    }
-    
-    // Smooth scroll handling
-    function handleSmoothScroll(e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            window.scrollTo({
-                top: targetElement.offsetTop - 80,
-                behavior: 'smooth'
-            });
-        }
-    }
-    
-    // Portal card hover effects
-    function handlePortalCardHover() {
-        const icon = this.querySelector('.portal-icon i');
-        if (icon) {
-            icon.style.transition = 'transform 0.3s ease';
-            icon.style.transform = 'scale(1.2) rotate(5deg)';
-        }
-    }
-    
-    function handlePortalCardLeave() {
-        const icon = this.querySelector('.portal-icon i');
-        if (icon) {
-            icon.style.transform = '';
-        }
-    }
-    
-    // CTA button hover effects
-    function handleCtaButtonHover() {
-        const icon = this.querySelector('i');
-        if (icon) {
-            icon.style.transform = 'translateX(5px)';
-        }
-    }
-    
-    function handleCtaButtonLeave() {
-        const icon = this.querySelector('i');
-        if (icon) {
-            icon.style.transform = '';
-        }
-    }
-    
-    // Handle window resize
+    // === WINDOW RESIZE ===
     function handleWindowResize() {
         if (window.innerWidth <= 768) {
+            // Mobile
             if (cursorDot) cursorDot.style.display = 'none';
             if (cursorOutline) cursorOutline.style.display = 'none';
             document.body.style.cursor = 'auto';
-            document.removeEventListener('mousemove', handleMouseMove);
         } else {
+            // Desktop
             if (cursorDot && cursorOutline && isCursorInitialized) {
                 cursorDot.style.display = 'block';
                 cursorOutline.style.display = 'block';
                 document.body.style.cursor = 'none';
-                document.addEventListener('mousemove', handleMouseMove);
             }
         }
     }
-    
+
+    // === SCROLL ANIMATIONS ===
+    function initScrollAnimations() {
+        const elements = document.querySelectorAll('.portal-card, .welcome-content, .location-card');
+
+        elements.forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        });
+
+        checkScrollAnimations();
+        
+        let scrollTimer;
+        window.addEventListener('scroll', function() {
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(checkScrollAnimations, 100);
+        }, { passive: true });
+    }
+
+    function checkScrollAnimations() {
+        const elements = document.querySelectorAll('.portal-card, .welcome-content, .location-card');
+
+        elements.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+
+            if (elementTop < windowHeight - 100) {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }
+        });
+    }
+
+    function initContentFadeIn() {
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) {
+            setTimeout(() => {
+                mainContent.classList.add('visible');
+            }, 1000);
+        }
+    }
+
     // Public API
     return {
         init: init,
@@ -300,6 +398,8 @@ function initDropdowns() {
         toggleMobileMenu: toggleMobileMenu,
         closeMobileMenu: closeMobileMenu,
         handleWindowResize: handleWindowResize,
+        initScrollAnimations: initScrollAnimations,
+        initContentFadeIn: initContentFadeIn,
         handleElementHover: handleElementHover,
         handleElementLeave: handleElementLeave
     };
@@ -307,13 +407,11 @@ function initDropdowns() {
 
 // ===== WORLDBUILDING APP =====
 const WorldbuildingApp = (function() {
-    // State
     let currentLocations = [];
     let currentFilter = 'all';
     let currentSort = 'name-asc';
     let currentSearch = '';
-    
-    // Elements
+
     const elements = {
         grid: null,
         filterButtons: null,
@@ -325,19 +423,15 @@ const WorldbuildingApp = (function() {
         emptyState: null,
         resetButton: null
     };
-    
-    // Initialize
+
     function init() {
         console.log('WorldbuildingApp initializing...');
-        console.log('WorldLocations available:', !!window.WorldLocations);
-        
         cacheElements();
         setupEventListeners();
         loadLocations();
         updateUI();
     }
-    
-    // Cache DOM elements
+
     function cacheElements() {
         elements.grid = document.getElementById('locationsGrid');
         elements.filterButtons = document.querySelectorAll('.filter-btn');
@@ -349,110 +443,75 @@ const WorldbuildingApp = (function() {
         elements.emptyState = document.getElementById('emptyState');
         elements.resetButton = document.getElementById('resetFilters');
     }
-    
-    // Load locations from data
+
     function loadLocations() {
         showLoading();
         
         setTimeout(() => {
-            console.log('🔄 Loading locations data...');
-            
-            // Check if WorldLocations exists
             if (!window.WorldLocations) {
-                console.error('❌ WorldLocations is not defined!');
-                showErrorMessage('WorldLocations data not loaded. Check console.');
+                console.error('WorldLocations not defined');
+                showErrorMessage('WorldLocations data not loaded');
                 hideLoading();
                 return;
             }
-            
-            // Get all locations with safety check
-            let allLocations = [];
+
             try {
-                allLocations = WorldLocations.getAllLocations();
-                console.log('Raw locations:', allLocations);
-            } catch (error) {
-                console.error('Error getting locations:', error);
-                showErrorMessage('Error loading location data: ' + error.message);
+                const allLocations = WorldLocations.getAllLocations();
+                
+                currentLocations = allLocations.filter(loc => {
+                    if (!loc || typeof loc !== 'object') return false;
+                    if (!loc.name) loc.name = `Location ${loc.id || 'Unknown'}`;
+                    return true;
+                });
+
+                console.log(`Loaded ${currentLocations.length} locations`);
+                updateTotalCount();
+                renderLocations();
                 hideLoading();
-                return;
+            } catch (error) {
+                console.error('Error loading locations:', error);
+                showErrorMessage('Error: ' + error.message);
+                hideLoading();
             }
-            
-            // Filter out invalid locations
-            currentLocations = allLocations.filter(loc => {
-                if (!loc || typeof loc !== 'object') {
-                    console.warn('Removing invalid location:', loc);
-                    return false;
-                }
-                if (!loc.name) {
-                    console.warn('Location missing name:', loc);
-                    loc.name = `Location ${loc.id || 'Unknown'}`;
-                }
-                return true;
-            });
-            
-            console.log(`✅ Loaded ${currentLocations.length} valid locations`);
-            
-            updateTotalCount();
-            renderLocations();
-            hideLoading();
         }, 500);
     }
-    
-    // Render locations to grid
+
     function renderLocations() {
-        if (!elements.grid) {
-            console.error('Grid element not found');
-            return;
-        }
-        
-        // Filter locations
+        if (!elements.grid) return;
+
         let filtered = filterLocations();
-        
-        // Sort locations
         filtered = sortLocations(filtered);
-        
-        // Update showing count
+
         if (elements.showingCount) {
             elements.showingCount.textContent = filtered.length;
         }
-        
-        // Clear grid
+
         elements.grid.innerHTML = '';
-        
-        // Show empty state if no results
+
         if (filtered.length === 0) {
             showEmptyState();
             return;
         }
-        
-        // Hide empty state
+
         hideEmptyState();
-        
-        // Create and append cards
+
         filtered.forEach(location => {
             try {
                 const card = createLocationCard(location);
-                if (card) {
-                    elements.grid.appendChild(card);
-                }
+                if (card) elements.grid.appendChild(card);
             } catch (error) {
-                console.error('Error creating card for location:', location, error);
-                // Add error card instead
+                console.error('Error creating card:', error);
                 const errorCard = createErrorCard(location?.id || 'Unknown', error.message);
                 elements.grid.appendChild(errorCard);
             }
         });
     }
-    
-    // Create a single location card element - FIXED VERSION
+
     function createLocationCard(location) {
-        // SAFETY CHECK: Ensure location is valid
         if (!location || typeof location !== 'object') {
-            console.error('Invalid location passed to createLocationCard:', location);
-            return createErrorCard('Invalid', 'Location data is invalid');
+            return createErrorCard('Invalid', 'Location data invalid');
         }
-        
-        // Create safe location object with defaults
+
         const safeLoc = {
             id: location.id || 0,
             name: location.name || 'Unknown Location',
@@ -467,152 +526,106 @@ const WorldbuildingApp = (function() {
             members: typeof location.members === 'number' ? location.members : 100,
             discovered: location.discovered || '2023-01-01'
         };
+
+        const category = (WorldLocations.categories && WorldLocations.categories[safeLoc.category]) || 
+            { name: 'Unknown', icon: 'fa-star', color: 'category-others' };
         
-        // Get category, danger, magic with fallbacks
-        const category = (WorldLocations.categories && WorldLocations.categories[safeLoc.category]) || {
-            name: 'Unknown',
-            icon: 'fa-star',
-            color: 'category-others'
-        };
+        const danger = (WorldLocations.dangerLevels && WorldLocations.dangerLevels[safeLoc.danger]) || 
+            { name: 'Low', color: '#2ecc71', order: 1 };
         
-        const danger = (WorldLocations.dangerLevels && WorldLocations.dangerLevels[safeLoc.danger]) || {
-            name: 'Low',
-            color: '#2ecc71',
-            order: 1
-        };
-        
-        const magic = (WorldLocations.magicLevels && WorldLocations.magicLevels[safeLoc.magic]) || {
-            name: 'Medium',
-            color: '#9b59b6',
-            order: 3
-        };
-        
-        // Format date safely
+        const magic = (WorldLocations.magicLevels && WorldLocations.magicLevels[safeLoc.magic]) || 
+            { name: 'Medium', color: '#9b59b6', order: 3 };
+
         let formattedDate = 'Unknown';
         try {
             const discoveredDate = new Date(safeLoc.discovered);
             if (!isNaN(discoveredDate.getTime())) {
                 formattedDate = discoveredDate.toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric'
+                    year: 'numeric', month: 'short', day: 'numeric'
                 });
             }
         } catch (e) {
-            console.warn('Invalid date format:', safeLoc.discovered);
+            console.warn('Invalid date:', safeLoc.discovered);
         }
-        
-        // Determine activity and exploration classes
+
         const activityClass = safeLoc.activity > 70 ? 'high' : safeLoc.activity > 40 ? 'medium' : 'low';
         const explorationClass = safeLoc.exploration > 70 ? 'high' : safeLoc.exploration > 40 ? 'medium' : 'low';
-        
-        // Create card element
+
         const card = document.createElement('div');
         card.className = 'location-card';
         card.dataset.locationId = safeLoc.id;
         card.dataset.category = safeLoc.category;
-        
-        // Set inner HTML
+
         card.innerHTML = `
-            <div class="card-header ${category.color || 'category-others'}">
-                <div class="card-badge">
-                    <span class="category-tag">
-                        <i class="fas ${category.icon || 'fa-star'}"></i> ${category.name}
-                    </span>
-                    <span class="danger-badge">
-                        <i class="fas fa-skull-crossbones"></i> ${danger.name} Danger
-                    </span>
+            <div class="location-card-header">
+                <div class="location-category ${category.color}">
+                    <i class="fas ${category.icon}"></i> ${category.name}
                 </div>
-                <h3 class="card-title">${safeLoc.name}</h3>
-                <div class="card-subtitle">
-                    <i class="fas fa-crown"></i> ${safeLoc.governingBody}
+                <div class="location-danger" style="background: ${danger.color}20; color: ${danger.color};">
+                    <i class="fas fa-exclamation-triangle"></i> ${danger.name} Danger
                 </div>
             </div>
-            
-            <div class="card-body">
-                <p class="card-description">${safeLoc.description}</p>
-                
-                <div class="card-features">
-                    ${safeLoc.features.map(feature => `
-                        <span class="feature-tag">
-                            <i class="fas fa-star"></i> ${feature}
-                        </span>
-                    `).join('')}
+            <h3 class="location-name">${safeLoc.name}</h3>
+            <div class="location-governing">
+                <i class="fas fa-crown"></i> ${safeLoc.governingBody}
+            </div>
+            <p class="location-description">${safeLoc.description}</p>
+            <div class="location-features">
+                <i class="fas fa-tags"></i>
+                ${safeLoc.features.map(feature => `<span class="feature-tag">${feature}</span>`).join('')}
+            </div>
+            <div class="location-stats">
+                <div class="stat-item">
+                    <div class="stat-label">Activity</div>
+                    <div class="stat-bar">
+                        <div class="stat-bar-fill ${activityClass}" style="width: ${safeLoc.activity}%"></div>
+                    </div>
+                    <div class="stat-value">${safeLoc.activity}%</div>
                 </div>
-                
-                <div class="card-stats">
-                    <div class="stat-row">
-                        <span class="stat-label">Activity</span>
-                        <div class="stat-bar">
-                            <div class="stat-fill ${activityClass}" style="width: ${safeLoc.activity}%"></div>
-                        </div>
-                        <span class="stat-value">${safeLoc.activity}%</span>
+                <div class="stat-item">
+                    <div class="stat-label">Exploration</div>
+                    <div class="stat-bar">
+                        <div class="stat-bar-fill ${explorationClass}" style="width: ${safeLoc.exploration}%"></div>
                     </div>
-                    <div class="stat-row">
-                        <span class="stat-label">Exploration</span>
-                        <div class="stat-bar">
-                            <div class="stat-fill ${explorationClass}" style="width: ${safeLoc.exploration}%"></div>
-                        </div>
-                        <span class="stat-value">${safeLoc.exploration}%</span>
-                    </div>
+                    <div class="stat-value">${safeLoc.exploration}%</div>
                 </div>
             </div>
-            
-            <div class="card-footer">
-                <div class="member-count">
-                    <i class="fas fa-user-friends"></i> ${safeLoc.members.toLocaleString()} active
+            <div class="location-footer">
+                <div class="location-members">
+                    <i class="fas fa-users"></i> ${safeLoc.members.toLocaleString()} active
                 </div>
+                <button class="visit-btn" onclick="WorldbuildingApp.handleVisitLocation(${safeLoc.id})">
+                    <i class="fas fa-door-open"></i> Visit
+                </button>
             </div>
         `;
-        
-        
-        // Add hover effects for custom cursor
-        card.addEventListener('mouseenter', () => {
-            if (window.MainApp && window.MainApp.handleElementHover) {
-                window.MainApp.handleElementHover.call(card);
-            }
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            if (window.MainApp && window.MainApp.handleElementLeave) {
-                window.MainApp.handleElementLeave.call(card);
-            }
-        });
-        
+
         return card;
     }
-    
-    // Create error card
+
     function createErrorCard(id, message) {
         const card = document.createElement('div');
         card.className = 'location-card error-card';
         card.innerHTML = `
-            <div class="card-header category-others">
-                <h3>⚠️ Error Loading Location</h3>
-            </div>
-            <div class="card-body">
+            <div style="text-align: center; padding: 2rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+                <h3>Error Loading Location</h3>
                 <p>ID: ${id}</p>
-                <p>${message || 'Unknown error'}</p>
-                <p>Please check the console for details.</p>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">${message}</p>
             </div>
         `;
         return card;
     }
-    
-    // Filter locations based on current state
+
     function filterLocations() {
-        if (!currentLocations || !currentLocations.length) {
-            return [];
-        }
-        
+        if (!currentLocations || !currentLocations.length) return [];
+
         let filtered = [...currentLocations];
-        
-        // Apply category filter
+
         if (currentFilter !== 'all') {
             filtered = filtered.filter(loc => loc.category === currentFilter);
         }
-        
-        // Apply search filter
+
         if (currentSearch.trim() !== '') {
             const searchTerm = currentSearch.toLowerCase();
             filtered = filtered.filter(loc => 
@@ -622,16 +635,15 @@ const WorldbuildingApp = (function() {
                 (Array.isArray(loc.features) && loc.features.some(f => f.toLowerCase().includes(searchTerm)))
             );
         }
-        
+
         return filtered;
     }
-    
-    // Sort locations
+
     function sortLocations(locations) {
         if (!locations || !locations.length) return [];
-        
+
         const sorted = [...locations];
-        
+
         switch(currentSort) {
             case 'name-asc':
                 return sorted.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
@@ -661,10 +673,8 @@ const WorldbuildingApp = (function() {
                 return sorted;
         }
     }
-    
-    // Handle filter button clicks
+
     function setupEventListeners() {
-        // Filter buttons
         if (elements.filterButtons) {
             elements.filterButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -675,282 +685,219 @@ const WorldbuildingApp = (function() {
                 });
             });
         }
-        
-        // Search input
+
         if (elements.searchInput) {
             elements.searchInput.addEventListener('input', (e) => {
                 currentSearch = e.target.value;
                 applyFilters();
             });
         }
-        
-        // Sort select
+
         if (elements.sortSelect) {
             elements.sortSelect.addEventListener('change', (e) => {
                 currentSort = e.target.value;
                 applyFilters();
             });
         }
-        
-        // Reset button
+
         if (elements.resetButton) {
             elements.resetButton.addEventListener('click', resetFilters);
         }
     }
-    
-    // Apply all filters and re-render
+
     function applyFilters() {
         renderLocations();
         updateUI();
     }
-    
-    // Reset all filters
+
     function resetFilters() {
-        // Reset filter buttons
         if (elements.filterButtons) {
             elements.filterButtons.forEach(btn => {
                 btn.classList.remove('active');
-                if (btn.dataset.filter === 'all') {
-                    btn.classList.add('active');
-                }
+                if (btn.dataset.filter === 'all') btn.classList.add('active');
             });
         }
-        
-        // Reset search
-        if (elements.searchInput) {
-            elements.searchInput.value = '';
-        }
-        
-        // Reset sort
-        if (elements.sortSelect) {
-            elements.sortSelect.value = 'name-asc';
-        }
-        
-        // Reset state
+
+        if (elements.searchInput) elements.searchInput.value = '';
+        if (elements.sortSelect) elements.sortSelect.value = 'name-asc';
+
         currentFilter = 'all';
         currentSearch = '';
         currentSort = 'name-asc';
-        
-        // Re-render
+
         applyFilters();
     }
-    
-    // Handle visit location click
+
     function handleVisitLocation(locationId) {
         let location;
         try {
             location = WorldLocations.getLocationById?.(locationId);
         } catch (error) {
-            console.error('Error getting location:', error);
             location = null;
         }
-        
+
         if (location) {
-            alert(`Entering ${location.name}...\n\nThis would typically redirect to the group chat for this location.`);
+            alert(`Entering ${location.name}...\n\nThis would redirect to the group chat.`);
         } else {
-            alert(`Location ID ${locationId} not found.\n\nThis would typically show an error or redirect to a default page.`);
+            alert(`Location ID ${locationId} not found.`);
         }
     }
-    
-    // Update UI elements
+
     function updateUI() {
         updateTotalCount();
     }
-    
-    // Update total count
+
     function updateTotalCount() {
         if (elements.totalCount && WorldLocations) {
             try {
                 const allLocations = WorldLocations.getAllLocations();
                 elements.totalCount.textContent = allLocations.length;
             } catch (error) {
-                console.error('Error updating total count:', error);
                 elements.totalCount.textContent = '0';
             }
         }
     }
-    
-    // Show loading state
+
     function showLoading() {
-        if (elements.loadingState) {
-            elements.loadingState.style.display = 'block';
-        }
-        if (elements.grid) {
-            elements.grid.style.opacity = '0.5';
-        }
+        if (elements.loadingState) elements.loadingState.style.display = 'block';
+        if (elements.grid) elements.grid.style.opacity = '0.5';
     }
-    
-    // Hide loading state
+
     function hideLoading() {
-        if (elements.loadingState) {
-            elements.loadingState.style.display = 'none';
-        }
-        if (elements.grid) {
-            elements.grid.style.opacity = '1';
-        }
+        if (elements.loadingState) elements.loadingState.style.display = 'none';
+        if (elements.grid) elements.grid.style.opacity = '1';
     }
-    
-    // Show empty state
+
     function showEmptyState() {
-        if (elements.emptyState) {
-            elements.emptyState.style.display = 'block';
-        }
-        if (elements.grid) {
-            elements.grid.style.display = 'none';
-        }
+        if (elements.emptyState) elements.emptyState.style.display = 'block';
+        if (elements.grid) elements.grid.style.display = 'none';
     }
-    
-    // Hide empty state
+
     function hideEmptyState() {
-        if (elements.emptyState) {
-            elements.emptyState.style.display = 'none';
-        }
-        if (elements.grid) {
-            elements.grid.style.display = 'grid';
-        }
+        if (elements.emptyState) elements.emptyState.style.display = 'none';
+        if (elements.grid) elements.grid.style.display = 'grid';
     }
-    
-    // Show error message
+
     function showErrorMessage(message) {
         if (elements.grid) {
             elements.grid.innerHTML = `
-                <div class="error-message">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <h3>Data Loading Error</h3>
-                    <p>${message}</p>
-                    <button onclick="location.reload()" class="cta-button primary">
+                <div style="text-align: center; padding: 3rem; grid-column: 1/-1;">
+                    <h2 style="color: var(--accent-fire); margin-bottom: 1rem;">⚠️ Data Loading Error</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 2rem;">${message}</p>
+                    <button onclick="location.reload()" class="visit-btn">
                         <i class="fas fa-redo"></i> Reload Page
                     </button>
                 </div>
             `;
         }
     }
-    
-    // Public API
+
     return {
         init: init,
+        handleVisitLocation: handleVisitLocation,
         getCurrentLocations: () => currentLocations,
         refreshLocations: loadLocations,
-        createLocationCard: createLocationCard // Expose for debugging
+        createLocationCard: createLocationCard
     };
 })();
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded, initializing apps...');
+    console.log('=== INITIALIZING APPS ===');
     
-    // Remove loading class if exists
     document.body.classList.remove('loading');
-    
+
     // Initialize MainApp
     if (window.MainApp) {
+        console.log('Initializing MainApp...');
         MainApp.init();
         
-        // Handle window resize
-        window.addEventListener('resize', MainApp.handleWindowResize);
+        // Debounced resize handler
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                MainApp.handleWindowResize();
+            }, 250);
+        });
         
-        // Initial resize check
-        setTimeout(() => {
-            MainApp.handleWindowResize();
-        }, 100);
+        setTimeout(MainApp.handleWindowResize, 100);
     }
-    
-    // Initialize WorldbuildingApp with safety delay
+
+    // Initialize WorldbuildingApp
     setTimeout(() => {
-        console.log('Checking WorldLocations for WorldbuildingApp...');
-        
         if (!window.WorldLocations) {
-            console.warn('WorldLocations not yet available, waiting...');
-            // Try again in 500ms
+            console.warn('WorldLocations not available, waiting...');
             setTimeout(() => {
                 if (window.WorldLocations && window.WorldbuildingApp) {
-                    console.log('WorldLocations now available, initializing WorldbuildingApp');
+                    console.log('Initializing WorldbuildingApp (delayed)');
                     WorldbuildingApp.init();
-                } else {
-                    console.error('WorldLocations still not available after delay');
                 }
             }, 500);
-        } else if (window.WorldbuildingApp) {
-            console.log('WorldLocations available, initializing WorldbuildingApp');
+        } else {
+            console.log('Initializing WorldbuildingApp');
             WorldbuildingApp.init();
         }
     }, 100);
+
+    // Smooth scroll for anchors
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return;
+
+            const target = document.querySelector(href);
+            if (target) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: target.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+
+                if (window.innerWidth <= 768) {
+                    MainApp.closeMobileMenu();
+                }
+            }
+        });
+    });
+
+    console.log('=== INITIALIZATION COMPLETE ===');
 });
 
-// Scroll animations
-window.addEventListener('scroll', () => {
-    const elements = document.querySelectorAll('.portal-card, .welcome-content, .location-card');
-    
-    elements.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
-        
-        if (elementTop < windowHeight - 100) {
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
-        }
-    });
-});
-
-// Set initial styles for scroll animations
-document.addEventListener('DOMContentLoaded', () => {
-    const elements = document.querySelectorAll('.portal-card, .welcome-content, .location-card');
-    
-    elements.forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
-        element.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-    });
-});
+// Global exposure
+window.MainApp = MainApp;
+window.WorldbuildingApp = WorldbuildingApp;
 
 // Debug helpers
 window.debugCursor = {
     enable: () => {
-        if (window.MainApp && typeof window.MainApp.initCustomCursor === 'function') {
-            window.MainApp.initCustomCursor();
-            console.log('Cursor manually enabled');
+        if (window.MainApp) {
+            MainApp.initCustomCursor();
+            console.log('Cursor enabled');
         }
     },
     disable: () => {
-        const cursorDot = document.querySelector('.cursor-dot');
-        const cursorOutline = document.querySelector('.cursor-outline');
-        if (cursorDot) cursorDot.style.display = 'none';
-        if (cursorOutline) cursorOutline.style.display = 'none';
+        const dot = document.querySelector('.cursor-dot');
+        const outline = document.querySelector('.cursor-outline');
+        if (dot) dot.style.display = 'none';
+        if (outline) outline.style.display = 'none';
         document.body.style.cursor = 'auto';
-        console.log('Cursor manually disabled');
+        console.log('Cursor disabled');
     }
 };
 
-window.debugWorldbuilding = {
-    checkData: () => {
-        console.log('=== WORLDBUILDING DEBUG ===');
-        console.log('WorldLocations:', window.WorldLocations);
-        console.log('Locations count:', window.WorldLocations?.locations?.length);
-        console.log('First location:', window.WorldLocations?.locations?.[0]);
-        console.log('WorldbuildingApp:', window.WorldbuildingApp);
-        
-        if (window.WorldLocations?.locations) {
-            const badLocations = window.WorldLocations.locations.filter((loc, idx) => 
-                !loc || typeof loc !== 'object' || !loc.name
-            );
-            if (badLocations.length > 0) {
-                console.error('Bad locations found:', badLocations);
-            }
-        }
-    },
-    testCard: (index = 0) => {
-        if (window.WorldbuildingApp && window.WorldLocations?.locations?.[index]) {
-            const testCard = window.WorldbuildingApp.createLocationCard(
-                window.WorldLocations.locations[index]
-            );
-            console.log('Test card created:', testCard);
-            return testCard;
-        }
+window.debugMenu = {
+    open: () => MainApp.toggleMobileMenu(),
+    close: () => MainApp.closeMobileMenu(),
+    check: () => {
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        console.log({
+            hamburger: !!hamburger,
+            navLinks: !!navLinks,
+            isActive: navLinks?.classList.contains('active')
+        });
     }
 };
-
-// Make apps available globally
-window.MainApp = MainApp;
-window.WorldbuildingApp = WorldbuildingApp;
 
 console.log('world.js loaded successfully');
