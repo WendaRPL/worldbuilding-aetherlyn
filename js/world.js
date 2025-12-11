@@ -529,6 +529,8 @@ const WorldbuildingApp = (function() {
 
         const category = (WorldLocations.categories && WorldLocations.categories[safeLoc.category]) || 
             { name: 'Unknown', icon: 'fa-star', color: 'category-others' };
+
+        const categoryColorClass = category.color;
         
         const danger = (WorldLocations.dangerLevels && WorldLocations.dangerLevels[safeLoc.danger]) || 
             { name: 'Low', color: '#2ecc71', order: 1 };
@@ -557,7 +559,7 @@ const WorldbuildingApp = (function() {
         card.dataset.category = safeLoc.category;
 
         card.innerHTML = `
-            <div class="location-card-header">
+            <div class="location-card-header ${categoryColorClass}">
                 <div class="location-category ${category.color}">
                     <i class="fas ${category.icon}"></i> ${category.name}
                 </div>
