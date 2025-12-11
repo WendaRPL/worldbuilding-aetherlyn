@@ -820,6 +820,36 @@ const WorldLocations = {
             members: 28,
             discovered: "2023-11-15"
         },
+        {
+            id: 37,
+            name: "Clan Shadow Garden",
+            category: "guild",
+            type: "Hidden Underground Organization",
+            governingBody: "Independent / Shadow Garden High Council",
+            leader: "HL (Founder & Supreme Overseer)",
+            location: "Abyssal Northvale, far beyond the Northern edges of Aetherlyn's known continents",
+            description: `
+        Jauh dari peradaban Aetherlyn, tersembunyi di sebuah lembah yang tampak mati bagi dunia luar, berdiri markas utama Shadow Garden. 
+        Tempat ini adalah rahang dunia yang menganga ke arah langit beku utara—sebuah rekahan besar yang bukan terbentuk oleh alam, 
+        tetapi oleh sesuatu yang jauh lebih tua dan lebih gelap. Badai salju menari tanpa suara, seolah menghalangi manusia untuk melihat 
+        apa yang bersemayam di bawah kedalaman es.
+
+        Abyssal Northvale bukan sekadar lembah. Ia adalah jantung denyut nadi Shadow Garden—tempat cahaya enggan tinggal dan rahasia tumbuh 
+        seperti akar gelap yang merambat tanpa henti. Hanya mereka yang terpilih yang mampu menuruni kedalaman tanpa kehilangan diri mereka sendiri.
+    `,
+            status: "Ultra-Secret — Undiscovered by the world",
+            danger: "high",
+            magic: "ancient",
+            activity: 95,
+            exploration: 0,
+            
+            motto: [
+                "From the Abyss, we rise unseen.",
+                "Where light refuses and darkness kneels, we stand.",
+                "Silence is our weapon. Shadows are our dominion."
+            ]
+        },
+
 
     ],
 
