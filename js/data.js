@@ -88,7 +88,7 @@ const WorldLocations = {
             magic: "medium",
             activity: 95,
             exploration: 30,
-            members: 450,
+            members: 82,
             discovered: "2024-01-01"
         },
         {
@@ -109,7 +109,7 @@ const WorldLocations = {
             id: 4,
             name: "Guardians of Night",
             category: "guild",
-            governingBody: "Troupe de Fools",
+            governingBody: "Ace of Spade (Current Leader)",
             description: "Guild yang percaya pada kekuatan bulan daripada matahari, terdiri dari mereka yang tertindas dan mencari kebenaran sejati. Bukan pahlawan, tetapi korban yang bangkit menjaga keseimbangan. 'Membangun dunia yang lebih jujur, di mana kekuatan digunakan bukan untuk menyucikan nama, tapi untuk menjaga keseimbangan.' Fokus pada strategi politik, perlawanan sipil, dan aktivitas quest khusus.",
             features: ["Political Strategy", "Civil Resistance", "Elite Training", "Brutal Fighting", "Shadow Operations", "Member Quests", "Truth Seekers"],
             danger: "high",
@@ -130,7 +130,7 @@ const WorldLocations = {
             magic: "medium",
             activity: 95,
             exploration: 100,
-            members: 217,
+            members: 239,
             discovered: "2024-10-09"
         },
         {
@@ -144,7 +144,7 @@ const WorldLocations = {
             magic: "low",
             activity: 65,
             exploration: 40,
-            members: 120, 
+            members: 55, 
             discovered: "2025-08-22"
         },
         {
@@ -158,7 +158,7 @@ const WorldLocations = {
             magic: "high",
             activity: 70,
             exploration: 60,
-            members: 185,
+            members: 76 ,
             discovered: "2025-10-13"
         },
         {
@@ -172,7 +172,7 @@ const WorldLocations = {
             magic: "medium",
             activity: 80,
             exploration: 20,
-            members: 275,
+            members: 366,
             discovered: "2024-10-08"
         },
         {
@@ -186,7 +186,7 @@ const WorldLocations = {
             magic: "high",
             activity: 75,
             exploration: 15,
-            members: 210,
+            members: 46,
             discovered: "2023-11-06"
         },
         {
@@ -200,7 +200,7 @@ const WorldLocations = {
             magic: "medium",
             activity: 60,
             exploration: 50,
-            members: 95,
+            members: 92,
             discovered: "2023-08-05"
         },
         {
@@ -223,7 +223,7 @@ const WorldLocations = {
             magic: "high",
             activity: 55,
             exploration: 65,
-            members: 180,
+            members: 76,
             discovered: "2024-10-10"
         },
         {
@@ -246,7 +246,7 @@ const WorldLocations = {
             magic: "ancient",
             activity: 45,
             exploration: 88,
-            members: 24,
+            members: 59,
             discovered: "2024-11-02"
         },
         {
@@ -460,7 +460,7 @@ const WorldLocations = {
             magic: "low",
             activity: 92,
             exploration: 25,
-            members: 160,
+            members: 172,
             discovered: "2024-12-03"
         },
         {
@@ -483,13 +483,13 @@ const WorldLocations = {
             magic: "high",
             activity: 75,
             exploration: 35,
-            members: 210,
+            members: 68,
             discovered: "2024-05-29"
         },
         {
             id: 24,
             name: "Winter Dark Castle",
-            category: "dungeon",
+            category: "others",
             governingBody: "Demon Lord — Shadow",
             description: "Sebuah kastil iblis megah yang berdiri di atas tebing beku, dikelilingi hutan mati yang membusuk dalam kesenyapan dan sungai membeku berwarna kehitaman. Setelah kehancuran kastil lama dalam perang primordial, hanya segelintir Archdemon purba yang bertahan dan menyembunyikan eksistensi mereka dari dunia fana. Kini mereka membangun ulang singgasana kegelapan di tempat ini. Menara-menara menjulang menembus kabut abu-abu langit, dipenuhi simbol demon kuno dan dililit duri raksasa yang hidup seakan menjadi penjaga abadi. Di aula utamanya, bisikan kutukan, doa terbalik, dan jeritan roh terikat terus bergema—menciptakan atmosfer yang hanya mampu dihuni oleh makhluk yang telah bersumpah kepada kegelapan. Winter Dark Castle adalah pusat kekuasaan, ritual, dan pertemuan para Demon tingkat tinggi untuk merencanakan dominasi atas dunia manusia. 'Mereka yang berjalan di atas bayangan, akan senantiasa berada dalam rengkuhan kegelapan.'",
             features: [
@@ -507,7 +507,7 @@ const WorldLocations = {
             magic: "ancient",
             activity: 90,
             exploration: 95,
-            members: 66,
+            members: 77,
             discovered: "2025-02-21"
         },
         {
@@ -531,7 +531,7 @@ const WorldLocations = {
             magic: "low",
             activity: 88,
             exploration: 70,
-            members: 245,
+            members: 77,
             discovered: "2024-06-12"
         },
         {
@@ -578,7 +578,7 @@ const WorldLocations = {
             magic: "ancient",
             activity: 68,
             exploration: 85,
-            members: 134,
+            members: 89,
             discovered: "2024-02-14"
         },
         {
@@ -602,7 +602,7 @@ const WorldLocations = {
             magic: "high",
             activity: 15,
             exploration: 75,
-            members: 0,
+            members: 78,
             discovered: "2024-10-31"
         },
         {
@@ -626,7 +626,7 @@ const WorldLocations = {
             magic: "ancient",
             activity: 85,
             exploration: 60,
-            members: 310,
+            members: 73,
             discovered: "2024-01-12",
             specialEffect: "Character revival point — Revive available after day change if fallen in quest"
         },
@@ -651,7 +651,7 @@ const WorldLocations = {
             magic: "low",
             activity: 98,
             exploration: 100,
-            members: 59,
+            members: 139,
             discovered: "2024-01-03"
         },
         {
@@ -675,7 +675,7 @@ const WorldLocations = {
             magic: "high",
             activity: 20,
             exploration:50,
-            members: 14,
+            members: 53,
             discovered: "2025-02-28"
         },
         {
@@ -699,7 +699,7 @@ const WorldLocations = {
             magic: "high",
             activity: 90,
             exploration: 55,
-            members: 380,
+            members: 61,
             discovered: "2024-02-02",
             specialFunction: [
                 "Official Battle Arena",
@@ -763,7 +763,7 @@ const WorldLocations = {
             magic: "passive",
             activity: 68,
             exploration: 42,
-            members: 0,
+            members: 65,
             discovered: "2025-12-08",
             specialFunction: [
                 "Rest Point",
@@ -779,12 +779,6 @@ const WorldLocations = {
             category: "others",
             governingBody: "Aetherlyn Kingdom",
             description: "Sebuah jantung ketenangan alam di barat laut Aetherlyn, tempat angin berbisik di antara rerumputan perak dan hamparan bunga liar bercahaya lembut. Di malam hari, langit di atas Orion terbuka lapang, memperlihatkan lautan bintang yang memancar terang seolah lebih dekat dari biasanya. Suasana yang hening, ringan, dan penuh kedamaian membuat banyak petualang datang bukan untuk bertarung, melainkan untuk meletakkan beban dunia dan mengingat kembali alasan mereka berjalan. Bagi penduduk sekitar, Orion adalah lambang dua hal: ketenangan yang memulihkan dan harapan yang abadi.",
-            subRegions: [
-                "Starpetal Field",
-                "Whispering Grassland",
-                "Orion Hill",
-                "Starlight Basin"
-            ],
             features: [
                 "Clear Night Sky",
                 "Glowing Wildflowers",
@@ -796,21 +790,14 @@ const WorldLocations = {
             magic: "celestial-passive",
             activity: 22,
             exploration: 55,
-            members: 0,
+            members: 51,
             discovered: "2025-12-08",
-            specialFunction: [
-                "Rest Point",
-                "Mental Recovery Zone",
-                "Meditation Area",
-                "Stargazing Spot",
-                "Dream Induction Zone (Passive)"
-            ]
         },
         {
             id: 36,
             name: "Guild The Veilborn",
             category: "guild",
-            governingBody: "Kaelrion Dzarven",
+            governingBody: "Kaelrion Dzarven (Current Leader)",
             description: "Mansion tersembunyi di tengah hutan tenggara Abyssal Forest yang menjadi markas The Veilborn - penjaga tabir yang melindungi batas antara dunia manusia dan kekuatan tak tersentuh. Bukan sekadar penyihir atau ksatria, mereka adalah penjaga keseimbangan yang tak terikat cahaya maupun kegelapan. 'Kami tidak menyembah terang. Kami tidak tunduk pada gelap. Kami menjaga batas yang memisahkan keduanya.'",
             features: ["Balance Keepers", "Secret Order", "Ancient Library", "Training Grounds", "Ritual Chambers", "Forest Sanctuary", "Boundary Protection"],
             danger: "medium",
@@ -824,8 +811,7 @@ const WorldLocations = {
             id: 37,
             name: "Clan Shadow Garden",
             category: "guild",
-            type: "Hidden Underground Organization",
-            governingBody: "Independent / Shadow Garden High Council",
+            governingBody: "Lucas Hanz Lux Cliodhna (Current Leader)",
             leader: "HL (Founder & Supreme Overseer)",
             location: "Abyssal Northvale, far beyond the Northern edges of Aetherlyn's known continents",
             description: `
@@ -842,15 +828,116 @@ const WorldLocations = {
             magic: "ancient",
             activity: 95,
             exploration: 0,
-            
-            motto: [
-                "From the Abyss, we rise unseen.",
-                "Where light refuses and darkness kneels, we stand.",
-                "Silence is our weapon. Shadows are our dominion."
-            ]
+            members: 25,
         },
+        {
+            id: 38,
+            name: "Clan Azure Frostwings",
+            category: "guild",
+            governingBody: "Hinari Raikatsu (Current Leader)",
+            baseRegion: "Lake Liraell",
+            status: "Active",
+            activity: 80,
+            exploration: 70,
+            members: 17,
+            danger: "low",
+            magic: "high",
+            description: `
+                Di dunia yang dipenuhi badai, api, dan kegelapan, Clan Azure Frostwings lahir dari keyakinan
+                bahwa kebebasan adalah hak yang tidak bisa dirantai—bahkan oleh es abadi sekalipun.
+
+                Mereka adalah para pengembara langit, penjelajah puncak bersalju, dan pejuang yang tidak
+                membiarkan tanah mengikat langkah mereka. Seperti burung yang menari di bawah aurora,
+                Frostwings hidup dalam kebersamaan, kehormatan, dan rasa bebas yang mutlak.
+
+                Lambang sayap es biru mereka menjadi simbol keteguhan seperti gletser, kejernihan seperti
+                kristal salju, dan kebebasan yang mengalir bagaikan angin utara.
+            `,
+            features: ["Aurora Roost", "Skybound Training Grounds", "Frostwing Lodges", "Hall of Feathers"]
+        },
+        {
+            id: 39,
+            name: "Black Market",
+            category: "others",
+            governingBody: "Unknown",
+            dangerLevel: "High",
+            magicLevel: "Ancient",
+            activity: 10,
+            exploration: 1,
+            members: 54,
+
+            description: `
+                Setelah lenyapnya tiga Penguasa Black Market, kekuasaan lama runtuh tanpa suara.
+                Tidak ada perang terbuka. Tidak ada deklarasi. Hanya satu fakta yang tersisa:
+                Black Market kini hanya memiliki satu tubuh, satu kehendak.
+
+                Pusat perdagangan gelap ini bergerak jauh di bawah reruntuhan Arc Ville,
+                bersembunyi di balik lapisan tanah dan sejarah yang telah dilupakan.
+                Jalur masuknya tidak pernah sama dua kali—berpindah mengikuti arus kekuasaan
+                dan kehendak pengelolanya yang baru.
+
+                Lorong-lorong sempit dipenuhi lampu minyak dengan cahaya redup,
+                menjadi satu-satunya penerangan di kedalaman pasar.
+                Suasananya sunyi, hampir sakral—hanya dipecah oleh
+                bunyi koin yang berpindah tangan dan langkah berat para homunculus penjaga.
+
+                Tidak ada teriakan pedagang. Tidak ada tawar-menawar keras.
+                Semua transaksi terjadi dengan suara rendah, tatapan tajam,
+                dan kesepakatan yang mengikat lebih kuat dari sumpah.
+                `,
 
 
+            features: ["Shadow Corridors", "Silent Exchange Halls", "Vault of No Return",],
+        },
+        {
+            id: 40,
+            name: "Animaux Virtice: Tundra Sanctuary",
+            category: "others",
+            governingBody: "None",
+            description: "To be Announced",
+            features: ["To be Announced"],
+            danger: "low",
+            magic: "medium",
+            activity: 78,
+            exploration: 100,
+            members: 77,
+            discovered: "2024-04-10"
+        },
+        {
+            id: 41,
+            name: "Alun-alun Kerajaan",
+            category: "kingdom",
+            governingBody: "Aetherlyn Kingdom",
+            description: `Sebagai saksi keagungan Kerajaan Aetherlyn, Alun-Alun Kerajaan berdiri gagah
+        dengan hamparan luas bebatuan yang tersusun rapi, seolah setiap pijakannya
+        diukir khusus untuk langkah para pahlawan.
+
+        Di pusat alun-alun, sebuah air mancur raksasa memancarkan air jernih
+        yang memantulkan cahaya bak serpihan bintang, menjadi simbol kemurnian
+        dan persatuan kerajaan.`,
+            features: ["Water Fountain", "Lantern Ring", "Flowers"],
+            danger: "low",
+            magic: "medium",
+            activity: 80,
+            exploration: 100,
+            members: 160,
+            discovered: "2024-04-10"
+        },
+        {
+            id: 42,
+            name: "Anomalus Termination Unit",
+            category: "others",
+            governingBody: "Null",
+            description: `Anomalus Termination Unit adalah unit khusus kerajaan yang dibuat untuk menangani kasus dengan level kelas atas.
+            Memiliki markas pusat di sebuah pulau yang sangat jauh dari dataran Aetherlyn, yaitu pulau Twilight. Merupakan daratan gerhana yang tak bisa dijamah oleh siapapun.`,
+            features: ["Ten Systems of Ecplipse", "Anomali Extermination"],
+            danger: "extreme",
+            magic: "ancient",
+            activity: 1,
+            exploration: 100,
+            members: 0,
+            discovered: "2025-06-15"
+        }
     ],
 
     // ===== HELPER METHODS =====

@@ -596,9 +596,6 @@ const WorldbuildingApp = (function() {
                 <div class="location-members">
                     <i class="fas fa-users"></i> ${safeLoc.members.toLocaleString()} active
                 </div>
-                <button class="visit-btn" onclick="WorldbuildingApp.handleVisitLocation(${safeLoc.id})">
-                    <i class="fas fa-door-open"></i> Visit
-                </button>
             </div>
         `;
 
