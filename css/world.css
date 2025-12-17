@@ -1134,16 +1134,35 @@ footer {
   }
   
   .filter-buttons {
-    gap: 0.85rem;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    width: 100%;
   }
   
   .filter-btn {
-    padding: 0.75rem 1.25rem;
-    font-size: 0.95rem;
-    min-width: 140px;
+    padding: 0.7rem 0.5rem;
+    font-size: 0.85rem;
+    min-width: auto;
     justify-content: center;
     cursor: hidden !important;
+    border-width: 1.5px;
+    flex-direction: column;
+    gap: 0.4rem;
+    text-align: center;
+    height: auto;
+    min-height: 70px;
+  }
+  
+  .filter-btn i {
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .filter-btn span {
+    font-size: 0.8rem;
+    line-height: 1.2;
   }
   
   .search-sort-section {
@@ -1190,5 +1209,115 @@ footer {
   
   .worldbuilding-hero .hero-title {
     font-size: 2.4rem;
+  }
+
+  .filter-buttons {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+  }
+  
+  .filter-btn {
+    padding: 0.6rem 0.4rem;
+    font-size: 0.8rem;
+    min-height: 65px;
+    border-radius: 20px;
+  }
+  
+  .filter-btn i {
+    font-size: 1rem;
+  }
+  
+  .filter-btn span {
+    font-size: 0.75rem;
+  }
+}
+
+/* === EXTRA SMALL SCREENS (320px and below) === */
+@media (max-width: 360px) {
+  .filter-buttons {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .filter-btn {
+    padding: 0.5rem 0.3rem;
+    min-height: 60px;
+    border-radius: 18px;
+  }
+  
+  .filter-btn i {
+    font-size: 0.9rem;
+  }
+  
+  .filter-btn span {
+    font-size: 0.7rem;
+  }
+}
+
+/* === MOBILE OPTIMIZATION FOR FILTER SECTION === */
+@media (max-width: 768px) {
+  .filter-section h3 {
+    text-align: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    padding: 0 0.5rem;
+  }
+  
+  /* Mobile scrollable filter buttons option */
+  .filter-buttons.scrollable {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-primary) transparent;
+  }
+  
+  .filter-buttons.scrollable::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  .filter-buttons.scrollable::-webkit-scrollbar-track {
+    background: rgba(76, 201, 240, 0.1);
+    border-radius: 2px;
+  }
+  
+  .filter-buttons.scrollable::-webkit-scrollbar-thumb {
+    background: var(--accent-primary);
+    border-radius: 2px;
+  }
+  
+  .filter-buttons.scrollable .filter-btn {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    min-width: 140px;
+    margin-right: 0.75rem;
+  }
+  
+  .filter-buttons.scrollable .filter-btn:last-child {
+    margin-right: 0;
+  }
+}
+
+/* === TOUCH-FRIENDLY FILTER BUTTONS === */
+@media (hover: none) and (pointer: coarse) {
+  .filter-btn {
+    /* Touch feedback */
+    -webkit-tap-highlight-color: rgba(76, 201, 240, 0.2);
+    user-select: none;
+  }
+  
+  .filter-btn:active {
+    transform: scale(0.95);
+    background: rgba(76, 201, 240, 0.1);
+    border-color: var(--accent-primary);
+  }
+  
+  .filter-btn.active:active {
+    background: var(--accent-primary);
+    color: white;
+    transform: scale(0.95);
   }
 }
