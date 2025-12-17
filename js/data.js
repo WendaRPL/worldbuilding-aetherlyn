@@ -975,8 +975,8 @@ const WorldLocations = {
             features: ["Historical Tavern", "First King's Legacy", "Flaming Ice Symbol", "Adventurer's Hub", "Story Archives", "Royal Brews"],
             danger: "high",
             magic: "medium",
-            activity: "80",
-            exploration: "90",
+            activity: 80,
+            exploration: 90,
             members: "105",
             discovered: "2024-09-10"
         }
@@ -1044,4 +1044,5 @@ window.WorldLocations = WorldLocations;
 
 
 console.log('data.js loaded with', WorldLocations.locations?.length || 0, 'locations');
+
 
