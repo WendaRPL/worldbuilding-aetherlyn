@@ -977,7 +977,7 @@ const WorldLocations = {
             magic: "medium",
             activity: 80,
             exploration: 90,
-            members: "105",
+            members: 105,
             discovered: "2024-09-10"
         }
     ],
@@ -1044,5 +1044,6 @@ window.WorldLocations = WorldLocations;
 
 
 console.log('data.js loaded with', WorldLocations.locations?.length || 0, 'locations');
+
 
 
