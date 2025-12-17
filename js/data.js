@@ -98,7 +98,7 @@ const WorldLocations = {
             governingBody: "None",
             description: "Hutan spiritual yang menjadi tempat dua pilar suci penyeimbang energi dunia. Di kedalamannya, dijaga oleh Qilin Primordial bercahaya surgawi dan Naga Primordial berkepala tiga dari neraka. Keduanya adalah makhluk mistis berusia jutaan tahun yang melindungi simpul aliran energi bumi. Hanya yang berhati murni dan berniat baik yang dapat dipercayai oleh penjaga kuno ini.",
             features: ["Sacred Energy Pillars", "Primordial Qilin Guardian", "Three-Headed Primordial Dragon", "Earth Energy Convergence", "Ancient Forest", "Spiritual Trials"],
-            danger: "extreme",
+            danger: "medium",
             magic: "ancient",
             activity: 70,
             exploration: 95,
@@ -999,5 +999,6 @@ const WorldLocations = {
 
 // Make it available globally
 window.WorldLocations = WorldLocations;
+
 
 console.log('data.js loaded with', WorldLocations.locations?.length || 0, 'locations');
