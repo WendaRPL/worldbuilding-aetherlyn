@@ -937,6 +937,48 @@ const WorldLocations = {
             exploration: 100,
             members: 0,
             discovered: "2025-06-15"
+        },
+        {
+            id: 43,
+            name: "Irondale Fortress",
+            category: "kingdom",
+            governingBody: "Aetherlyn Kingdom",
+            description: "Benteng pertahanan megah yang menjulang di perbatasan, menjadi jantung pertahanan dan simbol kekuasaan Kerajaan Aetherlyn. Dibangun dari batu abu kelam yang berkilau, dengan pintu gerbang baja mithril raksasa dan patung ksatria penjaga. Dentingan pedang dan langkah pasukan menggema di halaman luasnya, sementara bendera kerajaan berkibar gagah di setiap menara. 'Sang Aegis Aetherlyn, penjaga dalam simbol kekuatan.'",
+            features: ["Mithril Gates", "Royal Garrison", "Training Grounds", "Defensive Walls", "Knight Statues", "War Council Hall", "Armory"],
+            danger: "medium",
+            magic: "medium",
+            activity: 80,
+            exploration: 40,
+            members: 83,
+            discovered: "2025-02-15"
+        },
+        {
+            id: 44,
+            name: "Ravengard Continent",
+            category: "others",
+            governingBody: "None",
+            description: "Benua selatan Aetherlyn yang terbagi menjadi 3 wilayah ekstrim: Wilayah Es (gletser beku), Wilayah Hutan (hujan lebat dengan flora/fauna langka), dan Wilayah Gurun (padang pasir bersuhu tinggi). Tanah pertarungan tanpa belas kasih dimana hukum alam berlaku sepenuhnya. Sering muncul monster tingkat tinggi berpotensi bencana, memicu quest darurat. 'Sebuah tanah pertarungan dimana hanya ada kemenangan atau kebinasaan.'",
+            features: ["Ice Region", "Forest Region", "Desert Region", "High-Level Monsters", "Emergency Quests", "Survival Challenges", "Extreme Climates"],
+            danger: "high",
+            magic: "high",
+            activity: 80,
+            exploration: 95,
+            members: 119,
+            discovered: "2024-09-10"
+        },
+        {
+            id: 45,
+            name: "Blazing Ice Bar & Hotel",
+            category: "kingdom",
+            governingBody: "Aetherlyn Kingdom",
+            description: "Sebuah bar di area barat ibukota aetherlyn yang merupakan bar pertama dan tertua dalam sejarah kerajaan. Ia dibangun langsung oleh raja pertama panji bersama pengikutnya yang setia. Kini raja pertama sudah tiada, namun warisannya tetap bertahan. Dengan simbol balok es yang terbakar, bar blazing ice bagaikan simbol harapan ditengah dingin dan kejamnya dunia. Dimana semua kisah heroik akan bermula dan terus berkembang, ia akan menyambut setiap petualang yang datang",
+            features: ["Historical Tavern", "First King's Legacy", "Flaming Ice Symbol", "Adventurer's Hub", "Story Archives", "Royal Brews"],
+            danger: "high",
+            magic: "medium",
+            activity: "80",
+            exploration: "90",
+            members: "105",
+            discovered: "2024-09-10"
         }
     ],
 
@@ -1002,3 +1044,4 @@ window.WorldLocations = WorldLocations;
 
 
 console.log('data.js loaded with', WorldLocations.locations?.length || 0, 'locations');
+
